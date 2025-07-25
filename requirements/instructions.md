@@ -7,6 +7,31 @@ You will be using NextJS, shadcn, tailwind, Lucid icon
 # Core Functionalities
 
 1. Use LLM(deepseek/deepseek-chat-v3-0324:free) to analyse user input which is in JSON style containing his/her body condition. Evaluate the current condition and generate proper suggestion in JSON.
+  1. body condition containing:
+    PPG
+      Heart Rate
+      Respiratory Rate
+      Blood Oxygen Content  
+    IMU
+      Movement & Orientation
+    Temperature Sensor
+      Body Temp
+    Maybes
+      Cuff-less BP via pulse-transit-time pair (PPG + skin-vibration mic)
+      Single Electrode ECG (probably)
+
+
+2. For the UI design:
+  Use a navigation menu to switch pages.
+  1. First Page:
+    1. What happened to this guy in one sentence. 
+    2. Steps that this guy should follow when they are facing the urgency
+    3. Next page bottom
+  2. Second Page:
+    1. A map shows where other guys are ( We can skip this part at this time)
+    2. A list (We can skip this part at this time)
+  3. Third Page:
+    1. Show the detailed body condition of the guy
 
 # Docs
 ## Documentation of how to use deepseek api
