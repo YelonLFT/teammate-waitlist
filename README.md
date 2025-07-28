@@ -1,4 +1,5 @@
-<<<<<<< HEAD
+# teammate
+Band
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -38,4 +39,3 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 =======
 # teammate
 Band
->>>>>>> d121ed0b1c4ac2ecd11b02153863bd2e0058dd80
