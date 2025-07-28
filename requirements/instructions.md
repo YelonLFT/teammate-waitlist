@@ -33,6 +33,14 @@ You will be using NextJS, shadcn, tailwind, Lucid icon
   3. Third Page:
     1. Show the detailed body condition of the guy
 
+3. User Login and Registration and Add friends
+  Using Supabase for database
+  1. Login and Regisitration
+    1. Users enter their username and password to sign up. Their data will be stored in the database.
+    2. User profiles with personal info
+  2. Friend system (add/remove friends, friend requests)
+    
+
 # Docs
 ## Documentation of how to use deepseek api
 CODE EXAMPLE:
