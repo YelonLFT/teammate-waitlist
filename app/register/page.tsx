@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { UserPlus, CheckCircle } from "lucide-react";
 
 export default function RegisterPage() {
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -20,6 +19,8 @@ export default function RegisterPage() {
     setError("");
 
     try {
+      // Generate a random username from email
+      const username = email.split('@')[0] || 'user';
       const { error } = await signUp(email, username);
       if (error) {
         setError(error.message);
@@ -89,19 +90,6 @@ export default function RegisterPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="username" className="text-white font-semibold">Username</Label>
-              <Input
-                id="username"
-                type="text"
-                placeholder="Enter your username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                className="w-full bg-slate-700/50 border-slate-500/50 text-white placeholder:text-white/50 focus:border-blue-500 focus:ring-blue-500 backdrop-blur-sm"
-              />
-            </div>
-
             <div className="space-y-2">
               <Label htmlFor="email" className="text-white font-semibold">Email</Label>
               <Input
