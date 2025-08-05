@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Health Evaluation Platform",
-  description: "A platform for health evaluation and suggestions",
+  title: "OverdoseGuardian - Join Our Waitlist",
+  description: "Receive priority access to potentially life-saving AI technology that prevents overdose deaths.",
 };
 
 export default function RootLayout({

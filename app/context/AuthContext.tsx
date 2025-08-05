@@ -1,69 +1,57 @@
 "use client";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { User } from "@supabase/supabase-js";
 
 interface AuthContextType {
-  user: User | null;
+  user: any | null;
   loading: boolean;
-  signUp: (email: string, password: string, username: string) => Promise<{ error: any }>;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signOut: () => Promise<void>;
+  signUp: (email: string, username: string) => Promise<{ error: any }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    // Check active sessions and sets the user
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    // Listen for changes on auth state (signed in, signed out, etc.)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const signUp = async (email: string, password: string, username: string) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          username: username,
+  const signUp = async (email: string, username: string) => {
+    setLoading(true);
+    try {
+      // Generate a random password for Supabase auth
+      const randomPassword = Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-10);
+      
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password: randomPassword,
+        options: {
+          data: {
+            username: username,
+          },
         },
-      },
-    });
-    return { error };
-  };
-
-  const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    return { error };
-  };
-
-  const signOut = async () => {
-    await supabase.auth.signOut();
+      });
+      
+      if (error) {
+        console.error('Auth signup error:', error);
+        return { error };
+      }
+      
+      // For now, we'll just use the auth.users table
+      // The waitlist_users table can be added later when needed
+      console.log('User successfully created:', data.user?.id);
+      
+      return { error: null };
+    } catch (error: any) {
+      console.error('General signup error:', error);
+      return { error };
+    } finally {
+      setLoading(false);
+    }
   };
 
   const value = {
     user,
     loading,
     signUp,
-    signIn,
-    signOut,
   };
 
   return (

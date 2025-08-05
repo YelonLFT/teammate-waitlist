@@ -1,52 +1,31 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, UserPlus } from "lucide-react";
+import { UserPlus, CheckCircle } from "lucide-react";
 
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const { signUp } = useAuth();
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    // Validate passwords match
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      setLoading(false);
-      return;
-    }
-
-    // Validate password length
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long");
-      setLoading(false);
-      return;
-    }
-
     try {
-      const { error } = await signUp(email, password, username);
+      const { error } = await signUp(email, username);
       if (error) {
         setError(error.message);
       } else {
-        // Show success message and redirect to login
-        alert("Registration successful! Please check your email to verify your account.");
-        router.push("/login");
+        // Show success message
+        setSuccess(true);
       }
     } catch (err: any) {
       setError(err.message || "An error occurred");
@@ -55,21 +34,63 @@ export default function RegisterPage() {
     }
   };
 
+  if (success) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-purple-950 relative flex flex-col items-center justify-center p-4 overflow-hidden">
+        {/* Abstract reflective elements */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-slate-700 via-blue-900 to-purple-900 rounded-full blur-3xl opacity-30 -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-slate-700 via-blue-900 to-purple-900 rounded-full blur-3xl opacity-30 translate-x-1/2 translate-y-1/2"></div>
+        
+        {/* Header */}
+        <div className="text-center mb-8 relative z-10">
+          <h1 className="text-4xl font-bold text-white mb-2">Join Our Waitlist</h1>
+          <p className="text-white/80 text-lg">Receive priority access to potentially life-saving technology.</p>
+        </div>
+
+        {/* Success Message Box */}
+        <div className="w-full max-w-md relative z-10">
+          <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl p-8 border border-slate-600/50 text-center shadow-2xl shadow-black/50">
+            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-slate-600 via-blue-800 to-purple-800 rounded-full flex items-center justify-center mb-6 shadow-lg">
+              <CheckCircle className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-slate-200 mb-4">
+              You're on the list!
+            </h2>
+            <p className="text-white/80 text-lg">
+              Thank you for joining our waitlist. We'll notify you as soon as OverdoseGuardian launches.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-purple-950 relative flex flex-col items-center justify-center p-4 overflow-hidden">
+      {/* Abstract reflective elements */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-slate-700 via-blue-900 to-purple-900 rounded-full blur-3xl opacity-30 -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-slate-700 via-blue-900 to-purple-900 rounded-full blur-3xl opacity-30 translate-x-1/2 translate-y-1/2"></div>
+      
+      {/* Header */}
+      <div className="text-center mb-8 relative z-10">
+        <h1 className="text-4xl font-bold text-white mb-2">Join Our Waitlist</h1>
+        <p className="text-white/80 text-lg">Receive priority access to potentially life-saving technology.</p>
+      </div>
+
+      {/* Registration Form */}
+      <div className="w-full max-w-md relative z-10">
+        <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl p-8 border border-slate-600/50 shadow-2xl shadow-black/50">
           <div className="text-center mb-8">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
+            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-slate-600 to-blue-800 rounded-full flex items-center justify-center mb-6 shadow-lg">
               <UserPlus className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Create Account</h1>
-            <p className="text-gray-600 mt-3 text-lg">Join our health evaluation platform</p>
+            <h2 className="text-2xl font-bold text-white mb-2">Join Waitlist</h2>
+            <p className="text-white/80">Be the first to know when we launch</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="username" className="text-gray-700 font-semibold">Username</Label>
+              <Label htmlFor="username" className="text-white font-semibold">Username</Label>
               <Input
                 id="username"
                 type="text"
@@ -77,12 +98,12 @@ export default function RegisterPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="w-full"
+                className="w-full bg-slate-700/50 border-slate-500/50 text-white placeholder:text-white/50 focus:border-blue-500 focus:ring-blue-500 backdrop-blur-sm"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-700 font-semibold">Email</Label>
+              <Label htmlFor="email" className="text-white font-semibold">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -90,88 +111,24 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full"
+                className="w-full bg-slate-700/50 border-slate-500/50 text-white placeholder:text-white/50 focus:border-blue-500 focus:ring-blue-500 backdrop-blur-sm"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-700 font-semibold">Password</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full pr-10"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-gray-700 font-semibold">Confirm Password</Label>
-              <div className="relative">
-                <Input
-                  id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm your password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  className="w-full pr-10"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
-                </button>
-              </div>
-            </div>
-
             {error && (
-              <div className="text-red-600 text-sm bg-red-50/80 backdrop-blur-sm p-4 rounded-xl border border-red-200">
+              <div className="text-red-300 text-sm bg-red-900/30 backdrop-blur-sm p-4 rounded-xl border border-red-600/50">
                 {error}
               </div>
             )}
 
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-3 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              className="w-full bg-gradient-to-r from-blue-800 to-purple-800 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 text-lg rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/25"
               disabled={loading}
             >
-              {loading ? "Creating account..." : "Create Account"}
+              {loading ? "Joining waitlist..." : "Join Waitlist"}
             </Button>
           </form>
-
-          <div className="mt-8 text-center">
-            <p className="text-gray-600 text-lg">
-              Already have an account?{" "}
-              <Link
-                href="/login"
-                className="text-green-600 hover:text-green-700 font-semibold underline decoration-2 underline-offset-4 hover:decoration-green-400 transition-all duration-300"
-              >
-                Sign in
-              </Link>
-            </p>
-          </div>
         </div>
       </div>
     </div>
